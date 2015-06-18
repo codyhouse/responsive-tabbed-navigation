@@ -1,33 +1,43 @@
 jQuery(document).ready(function($){
-	var tabItems = $('.cd-tabs-navigation a'),
-		tabContentWrapper = $('.cd-tabs-content');
+	var tabs = $('.cd-tabs');
+	
+	tabs.each(function(){
+		var tab = $(this),
+			tabItems = tab.find('ul.cd-tabs-navigation'),
+			tabContentWrapper = tab.children('ul.cd-tabs-content'),
+			tabNavigation = tab.find('nav');
 
-	tabItems.on('click', function(event){
-		event.preventDefault();
-		var selectedItem = $(this);
-		if( !selectedItem.hasClass('selected') ) {
-			var selectedTab = selectedItem.data('content'),
-				selectedContent = tabContentWrapper.find('li[data-content="'+selectedTab+'"]'),
-				slectedContentHeight = selectedContent.innerHeight();
-			
-			tabItems.removeClass('selected');
-			selectedItem.addClass('selected');
-			selectedContent.addClass('selected').siblings('li').removeClass('selected');
-			//animate tabContentWrapper height when content changes 
-			tabContentWrapper.animate({
-				'height': slectedContentHeight
-			}, 200);
-		}
+		tabItems.on('click', 'a', function(event){
+			event.preventDefault();
+			var selectedItem = $(this);
+			if( !selectedItem.hasClass('selected') ) {
+				var selectedTab = selectedItem.data('content'),
+					selectedContent = tabContentWrapper.find('li[data-content="'+selectedTab+'"]'),
+					slectedContentHeight = selectedContent.innerHeight();
+				
+				tabItems.find('a.selected').removeClass('selected');
+				selectedItem.addClass('selected');
+				selectedContent.addClass('selected').siblings('li').removeClass('selected');
+				//animate tabContentWrapper height when content changes 
+				tabContentWrapper.animate({
+					'height': slectedContentHeight
+				}, 200);
+			}
+		});
+
+		//hide the .cd-tabs::after element when tabbed navigation has scrolled to the end (mobile version)
+		checkScrolling(tabNavigation);
+		tabNavigation.on('scroll', function(){ 
+			checkScrolling($(this));
+		});
 	});
-
-	//hide the .cd-tabs::after element when tabbed navigation has scrolled to the end (mobile version)
-	checkScrolling($('.cd-tabs nav'));
+	
 	$(window).on('resize', function(){
-		checkScrolling($('.cd-tabs nav'));
-		tabContentWrapper.css('height', 'auto');
-	});
-	$('.cd-tabs nav').on('scroll', function(){ 
-		checkScrolling($(this));
+		tabs.each(function(){
+			var tab = $(this);
+			checkScrolling(tab.find('nav'));
+			tab.find('.cd-tabs-content').css('height', 'auto');
+		});
 	});
 
 	function checkScrolling(tabs){
