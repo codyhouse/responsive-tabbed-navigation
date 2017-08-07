@@ -24,6 +24,27 @@ jQuery(document).ready(function($){
 				}, 200);
 			}
 		});
+		
+		$("body").on('click', '.tabac', function(event){
+			event.preventDefault();
+			var tabac = $(this).data('tabac');
+			var hash = $(this).data('href');
+			var selectedItem = tabs.find('ul.cd-tabs-navigation li:nth-child('+tabac+') a');
+			if( !selectedItem.hasClass('selected') ) {
+				var selectedTab = selectedItem.data('content'),
+					selectedContent = tabContentWrapper.find('li[data-content="'+selectedTab+'"]'),
+					slectedContentHeight = selectedContent.innerHeight();
+				
+				tabItems.find('a.selected').removeClass('selected');
+				selectedItem.addClass('selected');
+				selectedContent.addClass('selected').siblings('li').removeClass('selected');
+				//animate tabContentWrapper height when content changes 
+				tabContentWrapper.animate({
+					'height': slectedContentHeight
+				}, 200);
+			}
+			$('html, body').animate({scrollTop: $(this.hash).offset().top - 5}, 1000);
+		});
 
 		//hide the .cd-tabs::after element when tabbed navigation has scrolled to the end (mobile version)
 		checkScrolling(tabNavigation);
