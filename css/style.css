@@ -5,16 +5,15 @@ Primary style
 -------------------------------- */
 *, *::after, *::before {
   -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
+          box-sizing: border-box;
 }
 
-*::after, *::before {
-  content: '';
+html {
+  font-size: 62.5%;
 }
 
 body {
-  font-size: 100%;
+  font-size: 1.6rem;
   font-family: "PT Sans", sans-serif;
   color: #f8f7ee;
   background-color: #29324e;
@@ -25,9 +24,18 @@ a {
   text-decoration: none;
 }
 
+img, embed, object, video, svg {
+  max-width: 100%;
+}
+
+input, textarea {
+  font-family: inherit;
+  font-size: 1.6rem;
+}
+
 /* -------------------------------- 
 
-Main components 
+Resource style 
 
 -------------------------------- */
 header {
@@ -35,21 +43,19 @@ header {
   height: 160px;
   line-height: 180px;
   text-align: center;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
 }
+
 header h1 {
-  font-size: 20px;
-  font-size: 1.25rem;
+  font-size: 2rem;
 }
+
 @media only screen and (min-width: 768px) {
   header {
     height: 200px;
     line-height: 225px;
   }
   header h1 {
-    font-size: 26px;
-    font-size: 1.625rem;
+    font-size: 2.6rem;
   }
 }
 
@@ -59,45 +65,43 @@ header h1 {
   max-width: 960px;
   margin: 2em auto;
 }
-.cd-tabs:after {
-  content: "";
-  display: table;
-  clear: both;
+
+@supports (background: linear-gradient(to left, #000, #000)) or (background: -webkit-linear-gradient(to left, #000, #000)) {
+  /* if linear-gradient is supported */
+  .cd-tabs::after {
+    /* subtle gradient layer on top right of the tabbed navigation- to indicate it's possible to scroll */
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 60px;
+    width: 50px;
+    z-index: 1;
+    pointer-events: none;
+    background: -webkit-gradient(linear, right top, left top, from(#f8f7ee), to(rgba(248, 247, 238, 0)));
+    background: linear-gradient(to left, #f8f7ee, rgba(248, 247, 238, 0));
+    visibility: visible;
+    opacity: 1;
+    -webkit-transition: opacity .3s 0s, visibility 0s 0s;
+    transition: opacity .3s 0s, visibility 0s 0s;
+  }
+  .cd-tabs.cd-tabs--scroll-ended::after {
+    /* class added in JavaScript - remove the gradient layer when it's no longer possible to scroll */
+    visibility: hidden;
+    opacity: 0;
+    -webkit-transition: opacity .3s 0s, visibility 0s .3s;
+    transition: opacity .3s 0s, visibility 0s .3s;
+  }
 }
-.cd-tabs::after {
-  /* subtle gradient layer on top right - to indicate it's possible to scroll */
-  position: absolute;
-  top: 0;
-  right: 0;
-  height: 60px;
-  width: 50px;
-  z-index: 1;
-  pointer-events: none;
-  background: -webkit-linear-gradient( right , #f8f7ee, rgba(248, 247, 238, 0));
-  background: linear-gradient(to left, #f8f7ee, rgba(248, 247, 238, 0));
-  visibility: visible;
-  opacity: 1;
-  -webkit-transition: opacity .3s 0s, visibility 0s 0s;
-  -moz-transition: opacity .3s 0s, visibility 0s 0s;
-  transition: opacity .3s 0s, visibility 0s 0s;
-}
-.no-cssgradients .cd-tabs::after {
-  display: none;
-}
-.cd-tabs.is-ended::after {
-  /* class added in jQuery - remove the gradient layer when it's no longer possible to scroll */
-  visibility: hidden;
-  opacity: 0;
-  -webkit-transition: opacity .3s 0s, visibility 0s .3s;
-  -moz-transition: opacity .3s 0s, visibility 0s .3s;
-  transition: opacity .3s 0s, visibility 0s .3s;
-}
+
 .cd-tabs nav {
   overflow: auto;
   -webkit-overflow-scrolling: touch;
   background: #f8f7ee;
-  box-shadow: inset 0 -2px 3px rgba(203, 196, 130, 0.06);
+  -webkit-box-shadow: inset 0 -2px 3px rgba(203, 196, 130, 0.06);
+          box-shadow: inset 0 -2px 3px rgba(203, 196, 130, 0.06);
 }
+
 @media only screen and (min-width: 768px) {
   .cd-tabs::after {
     display: none;
@@ -107,184 +111,211 @@ header h1 {
     top: 0;
     left: 0;
     height: 100%;
-    box-shadow: inset -2px 0 3px rgba(203, 196, 130, 0.06);
+    -webkit-box-shadow: inset -2px 0 3px rgba(203, 196, 130, 0.06);
+            box-shadow: inset -2px 0 3px rgba(203, 196, 130, 0.06);
     z-index: 1;
   }
 }
+
 @media only screen and (min-width: 960px) {
   .cd-tabs nav {
     position: relative;
     float: none;
     background: transparent;
-    box-shadow: none;
+    -webkit-box-shadow: none;
+            box-shadow: none;
   }
 }
 
-.cd-tabs-navigation {
+.cd-tabs__navigation {
   width: 360px;
 }
-.cd-tabs-navigation:after {
+
+.cd-tabs__navigation:after {
+  /* clearfix */
   content: "";
   display: table;
   clear: both;
 }
-.cd-tabs-navigation li {
+
+.cd-tabs__navigation li {
   float: left;
 }
-.cd-tabs-navigation a {
+
+.cd-tabs__navigation a {
   position: relative;
   display: block;
   height: 60px;
   width: 60px;
   text-align: center;
-  font-size: 12px;
-  font-size: 0.75rem;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  font-size: 1.2rem;
   font-weight: 700;
   color: #c3c2b9;
-  padding-top: 34px;
+  padding-top: 35px;
 }
-.no-touch .cd-tabs-navigation a:hover {
+
+.cd-tabs__navigation a:hover {
   color: #29324e;
   background-color: rgba(233, 230, 202, 0.3);
 }
-.cd-tabs-navigation a.selected {
+
+.cd-tabs__navigation a.cd-selected {
   background-color: #ffffff !important;
-  box-shadow: inset 0 2px 0 #f05451;
+  -webkit-box-shadow: inset 0 2px 0 #f05451;
+          box-shadow: inset 0 2px 0 #f05451;
   color: #29324e;
 }
-.cd-tabs-navigation a::before {
+
+.cd-tabs__navigation a::before {
   /* icons */
+  content: "";
   position: absolute;
-  top: 12px;
+  top: 15px;
   left: 50%;
-  margin-left: -10px;
+  margin-left: -8px;
   display: inline-block;
-  height: 20px;
-  width: 20px;
-  background-image: url("../img/vicons.svg");
+  height: 16px;
+  width: 16px;
+  background-image: url("../img/cd-icons.svg");
   background-repeat: no-repeat;
 }
-.cd-tabs-navigation a[data-content='inbox']::before {
+
+.cd-tabs__navigation a[data-content='new']::before {
   background-position: 0 0;
 }
-.cd-tabs-navigation a[data-content='new']::before {
-  background-position: -20px 0;
+
+.cd-tabs__navigation a[data-content='gallery']::before {
+  background-position: -16px 0;
 }
-.cd-tabs-navigation a[data-content='gallery']::before {
-  background-position: -40px 0;
+
+.cd-tabs__navigation a[data-content='store']::before {
+  background-position: -32px 0;
 }
-.cd-tabs-navigation a[data-content='store']::before {
-  background-position: -60px 0;
+
+.cd-tabs__navigation a[data-content='settings']::before {
+  background-position: -48px 0;
 }
-.cd-tabs-navigation a[data-content='settings']::before {
+
+.cd-tabs__navigation a[data-content='trash']::before {
+  background-position: -64px 0;
+}
+
+.cd-tabs__navigation a[data-content='inbox']::before {
   background-position: -80px 0;
 }
-.cd-tabs-navigation a[data-content='trash']::before {
-  background-position: -100px 0;
+
+.cd-tabs__navigation a[data-content='new'].cd-selected::before {
+  background-position: 0 -16px;
 }
-.cd-tabs-navigation a[data-content='inbox'].selected::before {
-  background-position: 0 -20px;
+
+.cd-tabs__navigation a[data-content='gallery'].cd-selected::before {
+  background-position: -16px -16px;
 }
-.cd-tabs-navigation a[data-content='new'].selected::before {
-  background-position: -20px -20px;
+
+.cd-tabs__navigation a[data-content='store'].cd-selected::before {
+  background-position: -32px -16px;
 }
-.cd-tabs-navigation a[data-content='gallery'].selected::before {
-  background-position: -40px -20px;
+
+.cd-tabs__navigation a[data-content='settings'].cd-selected::before {
+  background-position: -48px -16px;
 }
-.cd-tabs-navigation a[data-content='store'].selected::before {
-  background-position: -60px -20px;
+
+.cd-tabs__navigation a[data-content='trash'].cd-selected::before {
+  background-position: -64px -16px;
 }
-.cd-tabs-navigation a[data-content='settings'].selected::before {
-  background-position: -80px -20px;
+
+.cd-tabs__navigation a[data-content='inbox'].cd-selected::before {
+  background-position: -80px -16px;
 }
-.cd-tabs-navigation a[data-content='trash'].selected::before {
-  background-position: -100px -20px;
-}
+
 @media only screen and (min-width: 768px) {
-  .cd-tabs-navigation {
+  .cd-tabs__navigation {
     /* move the nav to the left on medium sized devices */
     width: 80px;
     float: left;
   }
-  .cd-tabs-navigation a {
+  .cd-tabs__navigation a {
     height: 80px;
     width: 80px;
     padding-top: 46px;
   }
-  .cd-tabs-navigation a.selected {
-    box-shadow: inset 2px 0 0 #f05451;
+  .cd-tabs__navigation a.cd-selected {
+    -webkit-box-shadow: inset 2px 0 0 #f05451;
+            box-shadow: inset 2px 0 0 #f05451;
   }
-  .cd-tabs-navigation a::before {
-    top: 22px;
+  .cd-tabs__navigation a::before {
+    top: 24px;
   }
 }
+
 @media only screen and (min-width: 960px) {
-  .cd-tabs-navigation {
-    /* tabbed on top on big devices */
+  .cd-tabs__navigation {
+    /* tabbed navigation on top on big devices */
     width: auto;
     background-color: #f8f7ee;
-    box-shadow: inset 0 -2px 3px rgba(203, 196, 130, 0.06);
+    -webkit-box-shadow: inset 0 -2px 3px rgba(203, 196, 130, 0.06);
+            box-shadow: inset 0 -2px 3px rgba(203, 196, 130, 0.06);
   }
-  .cd-tabs-navigation a {
+  .cd-tabs__navigation a {
     height: 60px;
     line-height: 60px;
     width: auto;
     text-align: left;
-    font-size: 14px;
-    font-size: 0.875rem;
+    font-size: 1.4rem;
     padding: 0 2.8em 0 4.6em;
   }
-  .cd-tabs-navigation a.selected {
-    box-shadow: inset 0 2px 0 #f05451;
+  .cd-tabs__navigation a.cd-selected {
+    -webkit-box-shadow: inset 0 2px 0 #f05451;
+            box-shadow: inset 0 2px 0 #f05451;
   }
-  .cd-tabs-navigation a::before {
+  .cd-tabs__navigation a::before {
     top: 50%;
-    margin-top: -10px;
+    margin-top: -8px;
     margin-left: 0;
-    left: 38px;
+    left: 40px;
   }
 }
 
-.cd-tabs-content {
+.cd-tabs__content {
   background: #ffffff;
 }
-.cd-tabs-content li {
+
+.cd-tabs__content li {
   display: none;
   padding: 1.4em;
 }
-.cd-tabs-content li.selected {
+
+.cd-tabs__content li.cd-selected {
   display: block;
   -webkit-animation: cd-fade-in 0.5s;
-  -moz-animation: cd-fade-in 0.5s;
-  animation: cd-fade-in 0.5s;
+          animation: cd-fade-in 0.5s;
 }
-.cd-tabs-content li p {
-  font-size: 14px;
-  font-size: 0.875rem;
+
+.cd-tabs__content li p {
+  font-size: 1.4rem;
   line-height: 1.6;
   color: #8493bf;
   margin-bottom: 2em;
 }
+
 @media only screen and (min-width: 768px) {
-  .cd-tabs-content {
+  .cd-tabs__content {
     min-height: 480px;
   }
-  .cd-tabs-content li {
+  .cd-tabs__content li {
     padding: 2em 2em 2em 7em;
   }
 }
+
 @media only screen and (min-width: 960px) {
-  .cd-tabs-content {
+  .cd-tabs__content {
     min-height: 0;
   }
-  .cd-tabs-content li {
+  .cd-tabs__content li {
     padding: 3em;
   }
-  .cd-tabs-content li p {
-    font-size: 16px;
-    font-size: 1rem;
+  .cd-tabs__content li p {
+    font-size: 1.6rem;
   }
 }
 
@@ -296,14 +327,7 @@ header h1 {
     opacity: 1;
   }
 }
-@-moz-keyframes cd-fade-in {
-  0% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
-}
+
 @keyframes cd-fade-in {
   0% {
     opacity: 0;
