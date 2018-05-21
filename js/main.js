@@ -1,4 +1,5 @@
 (function(){
+    // Responsive Tabbed Navigation - by CodyHouse.co
 	function TabbedNavigation( element ) {
 		this.element = element;
 		this.navigation = this.element.getElementsByTagName("nav")[0];
