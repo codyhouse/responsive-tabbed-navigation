@@ -1,0 +1,222 @@
+@import '../../../../codyhouse-framework/main/assets/css/_global.scss'; // ⚠️ make sure to import the CodyHouse framework
+@import url('https://fonts.googleapis.com/css?family=PT+Sans:400,700'); // custom font
+
+// --------------------------------
+
+// Responsive Tabbed Navigation - by CodyHouse.co
+
+// --------------------------------
+
+:root {
+  // colors
+  @include defineColorHSL(--cd-color-1, 225, 31%, 23%); // Pickled Bluewood
+  @include defineColorHSL(--cd-color-2, 54, 42%, 95%);  // Ecru White
+  @include defineColorHSL(--cd-color-3, 54, 8%, 75%);   // Mist Gray
+  @include defineColorHSL(--cd-color-4, 1, 84%, 63%);   // Carnation
+
+  // font
+  --font-primary: 'PT Sans', sans-serif;
+}
+
+body {
+  background-color: var(--cd-color-1);
+  padding: var(--space-xl) 0;
+}
+
+h1 {
+  color: var(--cd-color-2);
+  font-size: var(--text-lg);
+}
+
+.cd-article-link {
+  color: lightness(var(--cd-color-1), 2.3);
+  font-size: var(--text-sm);
+}
+
+.cd-tabs {
+  position: relative;
+  
+  @include breakpoint(sm) {
+    display: flex;
+  }
+
+  @include breakpoint(md) { // remove this if you want the navigation to remain vertical
+    display: block;
+  }
+}
+
+@supports (background: linear-gradient(to left, #000, #000)) { // if linear-gradient is supported
+  .cd-tabs::after { // subtle gradient layer on top right of the tabbed navigation - used to indicate it's possible to scroll
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 60px;
+    width: 50px;
+    z-index: 1;
+    pointer-events: none;
+    background: linear-gradient(to left, var(--cd-color-2), alpha(var(--cd-color-2), 0));
+    visibility: visible;
+    opacity: 1;
+    transition: opacity .3s 0s, visibility 0s 0s;
+
+    @include breakpoint(sm) {
+      display: none;
+    }
+  }
+
+  .cd-tabs--scroll-ended::after { // class added in JavaScript - remove the gradient layer when it's no longer possible to scroll
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity .3s 0s, visibility 0s .3s;
+  }
+}
+
+.cd-tabs__navigation {
+  background: var(--cd-color-2);
+  --cd-color-shadow: hsla(var(--cd-color-2-h), var(--cd-color-2-s), calc(var(--cd-color-2-l)*0.68), 0.06);
+  box-shadow: inset 0 -2px 3px var(--cd-color-shadow);
+
+  @include breakpoint(sm) {
+    width: 80px;
+    flex-shrink: 0; // make sure width is 80px
+    box-shadow: inset -2px 0 3px var(--cd-color-shadow);
+  }
+
+  @include breakpoint(md) { // remove this if you want the navigation to remain vertical
+    display: flex; // fix issuse on Firefox
+    width: auto;
+    background: transparent;
+    box-shadow: none;
+  }
+}
+
+.cd-tabs__list {
+  display: flex;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+
+  li {
+    flex-shrink: 0;
+  }
+
+  @include breakpoint(sm) {
+    flex-direction: column; // place items in a single column
+  }
+
+  @include breakpoint(md) { // remove this if you want the navigation to remain vertical
+    display: inline-flex;
+    flex-direction: row; // reset item direction
+    background-color: var(--cd-color-2);
+    --cd-color-shadow: hsla(var(--cd-color-2-h), var(--cd-color-2-s), calc(var(--cd-color-2-l)*0.68), 0.06);
+    box-shadow: inset 0 -2px 3px var(--cd-color-shadow);
+  }
+}
+
+.cd-tabs__item {
+  position: relative;
+  display: flex;
+  flex-direction: column; // align icon + text
+  justify-content: center;
+  align-items: center;
+  height: 60px;
+  width: 60px;
+  font-size: calc(var(--text-xs)*1.1);
+  font-weight: 700;
+  color: var(--cd-color-3);
+  text-decoration: none;
+
+  &:hover {
+    color: var(--cd-color-1);
+    background-color: hsla(var(--cd-color-2-h), var(--cd-color-2-s), calc(var(--cd-color-2-l)*0.89), 0.3);
+  }
+
+  .icon {
+    margin-bottom: var(--space-xxxs);
+    color: inherit;
+  }
+
+  @include breakpoint(sm) {
+    height: 80px;
+    width: 80px;
+  }
+
+  @include breakpoint(md) { // remove this if you want the navigation to remain vertical
+    height: 60px;
+    width: auto;
+    padding: 0 var(--space-lg);
+    flex-direction: row; // place icon and text on the same row
+
+    .icon {
+      margin-bottom: 0;
+      margin-right: var(--space-xxs);
+    }
+  }
+}
+
+.js .cd-tabs__item--selected {
+  background-color: var(--color-white);
+  box-shadow: inset 0 2px 0 var(--cd-color-4);
+  color: var(--cd-color-1);
+
+  &:hover {
+    background-color: var(--color-white);
+  }
+
+  .icon {
+    color: var(--cd-color-4);
+  }
+
+  @include breakpoint(sm) {
+    box-shadow: inset 2px 0 0 var(--cd-color-4);
+  }
+
+  @include breakpoint(md) {  // remove this if you want the navigation to remain vertical
+    box-shadow: inset 0 2px 0 var(--cd-color-4);
+  }
+}
+
+.cd-tabs__panels {
+  background: var(--color-white);
+  overflow: hidden;
+}
+
+.cd-tabs__panel {
+  padding: var(--space-md);
+  --line-height-multiplier: 1.14;
+  --text-vspace-multiplier: 1.25;
+
+  p {
+    color: lightness(var(--cd-color-1), 2.74);
+  }
+
+  @include breakpoint(sm) {
+    padding: var(--space-lg);
+  }
+
+  @include breakpoint(md) {
+    p {
+      font-size: var(--text-sm);
+    }
+  }
+}
+
+.js {
+  .cd-tabs__panel {
+    display: none;
+  }
+
+  .cd-tabs__panel--selected {
+    display: block;
+    animation: cd-fade-in 0.5s;
+  }
+}
+
+@keyframes cd-fade-in {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
